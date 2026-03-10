@@ -1,7 +1,6 @@
 <?php
 include 'koneksi.php';
 
-// Pastikan hanya admin yang sudah login yang bisa mengakses halaman ini
 if (!isset($_SESSION['user_id'])) { 
     header("Location: login.php"); 
     exit(); 
