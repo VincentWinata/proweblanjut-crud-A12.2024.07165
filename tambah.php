@@ -23,31 +23,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
+<body class="bg-light">
     <div class="container mt-5 mb-5">
-        <div class="card card-custom p-4 col-md-8 mx-auto">
+        <div class="card card-custom p-4 col-md-8 mx-auto shadow-sm">
             <h3 class="mb-4">Tambah Data Barang</h3>
             <form method="POST" enctype="multipart/form-data">
                 <div class="row mb-3">
-                    <div class="col"><label>Nama Barang</label><input type="text" name="nama_barang" class="form-control" required></div>
-                    <div class="col"><label>Kategori</label>
+                    <div class="col">
+                        <label>Nama Barang</label>
+                        <input type="text" name="nama_barang" class="form-control" required autocomplete="off">
+                    </div>
+                    <div class="col">
+                        <label>Kategori</label>
                         <select name="kategori" class="form-select">
-                            <option>Pakaian</option><option>Elektronik</option><option>Makanan</option><option>Aksesoris</option>
+                            <option>Pakaian</option>
+                            <option>Elektronik</option>
+                            <option>Makanan</option>
+                            <option>Aksesoris</option>
                         </select>
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col"><label>Harga (Rp)</label><input type="number" name="harga" class="form-control" required></div>
-                    <div class="col"><label>Stok</label><input type="number" name="stok" class="form-control" required></div>
+                    <div class="col">
+                        <label>Harga (Rp)</label>
+                        <input type="number" name="harga" class="form-control" required>
+                    </div>
+                    <div class="col">
+                        <label>Jumlah</label> <input type="number" name="jumlah" class="form-control" required>
+                    </div>
                 </div>
-                <div class="mb-3"><label>Deskripsi</label><textarea name="deskripsi" class="form-control"></textarea></div>
+                <div class="mb-3">
+                    <label>Deskripsi</label>
+                    <textarea name="deskripsi" class="form-control"></textarea>
+                </div>
                 <div class="mb-4">
                     <label>Upload Gambar</label>
                     <input type="file" name="gambar" id="gambarInput" class="form-control" accept="image/*">
-                    <img id="preview" alt="Preview Image">
+                    <img id="preview" alt="Preview Image" class="mt-2" style="max-height: 200px; display: none; border-radius: 8px;">
                 </div>
-                <button type="submit" class="btn btn-primary">Simpan</button>
-                <a href="barang.php" class="btn btn-light">Batal</a>
+                <button type="submit" class="btn btn-primary w-100 mb-2">Simpan ke Inventaris</button>
+                <a href="barang.php" class="btn btn-outline-secondary w-100">Batal</a>
             </form>
         </div>
     </div>
