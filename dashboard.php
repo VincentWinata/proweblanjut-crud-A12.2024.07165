@@ -2,7 +2,7 @@
 include 'koneksi.php';
 if (!isset($_SESSION['user_id'])) { header("Location: login.php"); exit(); }
 $total_barang = $conn->query("SELECT COUNT(*) FROM barang")->fetchColumn();
-$total_stok = $conn->query("SELECT SUM(stok) FROM barang")->fetchColumn();
+$total_stok = $conn->query("SELECT SUM(jumlah) FROM barang")->fetchColumn(); 
 ?>
 <!DOCTYPE html>
 <html lang="id">

@@ -12,8 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambah_user'])) {
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
     
     try {
-        $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)"); // [cite: 196]
-        $stmt->execute([$username, $password]); // [cite: 204]
+        $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
+        $stmt->execute([$username, $password]); 
         $success = "User admin baru berhasil ditambahkan!";
     } catch(PDOException $e) { 
         $error = "Gagal menambah user! (Username mungkin sudah terpakai)"; 
@@ -25,14 +25,13 @@ if (isset($_GET['hapus'])) {
     if ($id_hapus == $_SESSION['user_id']) {
         $error = "Anda tidak dapat menghapus akun Anda sendiri saat sedang login!";
     } else {
-        $stmt = $conn->prepare("DELETE FROM users WHERE id = ?"); // [cite: 260]
-        $stmt->execute([$id_hapus]); // [cite: 265]
-        header("Location: kelola_user.php"); // [cite: 176, 177]
+        $stmt = $conn->prepare("DELETE FROM users WHERE id = ?"); 
+        $stmt->execute([$id_hapus]); 
+        header("Location: kelola_user.php"); 
         exit();
     }
 }
 
-// MENGAMBIL DAFTAR USER (READ) [cite: 149]
 $stmt = $conn->query("SELECT id, username FROM users ORDER BY id DESC");
 $users_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>

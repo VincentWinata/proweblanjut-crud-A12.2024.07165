@@ -44,7 +44,6 @@ $barang_list = $conn->query("SELECT * FROM barang ORDER BY id DESC")->fetchAll()
                 <a href="logout.php" class="btn btn-outline-danger btn-sm w-100 mt-3">🚪 Logout</a>
             </div>
         </div>
-
         <div class="flex-grow-1 p-5">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="text-dark fw-bold">Inventaris Barang</h2>
@@ -71,7 +70,8 @@ $barang_list = $conn->query("SELECT * FROM barang ORDER BY id DESC")->fetchAll()
                                 <th>Kategori</th>
                                 <th>Barang</th>
                                 <th>Harga</th>
-                                <th>Stok</th>
+                                <th>Jumlah</th>
+                                <th>Tanggal Masuk</th>
                                 <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
@@ -79,7 +79,7 @@ $barang_list = $conn->query("SELECT * FROM barang ORDER BY id DESC")->fetchAll()
                             <?php foreach ($barang_list as $row): ?>
                             <tr>
                                 <td>
-                                    <img src="<?= $row['gambar'] ? htmlspecialchars($row['gambar']) : 'https://via.placeholder.com/70?text=No+Image' ?>" class="thumbnail" alt="Gambar Barang">
+                                    <img src="<?= $row['gambar'] ? htmlspecialchars($row['gambar']) : 'https://via.placeholder.com/70?text=No+Image' ?>" class="thumbnail" alt="Gambar">
                                 </td>
                                 <td><span class="badge bg-info text-dark"><?= htmlspecialchars($row['kategori']) ?></span></td>
                                 <td>
@@ -87,7 +87,10 @@ $barang_list = $conn->query("SELECT * FROM barang ORDER BY id DESC")->fetchAll()
                                     <small class="text-muted"><?= htmlspecialchars($row['deskripsi']) ?></small>
                                 </td>
                                 <td class="text-success fw-bold">Rp. <?= number_format($row['harga'], 0, ',', '.') ?></td>
-                                <td><?= $row['stok'] ?></td>
+                                <td><?= $row['jumlah'] ?></td> 
+                                <td>
+                                    <small><?= date('d M Y, H:i', strtotime($row['tanggal_masuk'])) ?></small>
+                                </td>
                                 <td class="text-center">
                                     <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
                                     <a href="hapus.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus barang ini?')">Hapus</a>
@@ -99,9 +102,7 @@ $barang_list = $conn->query("SELECT * FROM barang ORDER BY id DESC")->fetchAll()
                 </div>
             </div>
         </div>
-        
     </div>
-    
     <script src="assets/script.js"></script>
 </body>
 </html>

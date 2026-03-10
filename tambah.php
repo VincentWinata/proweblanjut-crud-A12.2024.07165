@@ -8,10 +8,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $gambar_path = 'uploads/' . time() . '_' . basename($_FILES['gambar']['name']);
         move_uploaded_file($_FILES['gambar']['tmp_name'], $gambar_path);
     }
-
-    $sql = "INSERT INTO barang (nama_barang, kategori, harga, stok, deskripsi, gambar) VALUES (?, ?, ?, ?, ?, ?)";
+    $tanggal_masuk = date('Y-m-d H:i:s');
+    $sql = "INSERT INTO barang (nama_barang, kategori, harga, jumlah, deskripsi, gambar, tanggal_masuk) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->execute([$_POST['nama_barang'], $_POST['kategori'], $_POST['harga'], $_POST['stok'], $_POST['deskripsi'], $gambar_path]);
+    $stmt->execute([$_POST['nama_barang'], $_POST['kategori'], $_POST['harga'], $_POST['jumlah'], $_POST['deskripsi'], $gambar_path, $tanggal_masuk]);
     
     header("Location: barang.php"); exit();
 }
