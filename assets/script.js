@@ -1,4 +1,4 @@
-// Interactive Image Preview for Forms
+// Image Preview Feature for Admin Forms
 const gambarInput = document.getElementById('gambarInput');
 if (gambarInput) {
     gambarInput.addEventListener('change', function(event) {
@@ -15,7 +15,7 @@ if (gambarInput) {
     });
 }
 
-// Live Search/Filter for the Data Table
+// Live Search for Admin Data Table
 const searchInput = document.getElementById('searchInput');
 if (searchInput) {
     searchInput.addEventListener('keyup', function() {
@@ -28,3 +28,32 @@ if (searchInput) {
         });
     });
 }
+
+// Category Filter for Public Storefront
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.category-filter-tabs .nav-link');
+    const items = document.querySelectorAll('.product-item');
+
+    if(tabs.length > 0) {
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all tabs, add to the clicked one
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                const filterValue = this.getAttribute('data-filter');
+
+                // Show/hide items based on selected category
+                items.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    }
+});
