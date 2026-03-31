@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include '../koneksi.php';
 if (!isset($_SESSION['user_id'])) { header("Location: login.php"); exit(); }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conn->prepare($sql);
     $stmt->execute([$_POST['nama_barang'], $_POST['kategori'], $_POST['harga'], $_POST['jumlah'], $_POST['deskripsi'], $gambar_path, $tanggal_masuk]);
     
-    header("Location: barang.php"); exit();
+    header("Location: ../barang.php"); exit();
 }
 ?>
 <!DOCTYPE html>
@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <img id="preview" alt="Preview Image" class="mt-2" style="max-height: 200px; display: none; border-radius: 8px;">
                 </div>
                 <button type="submit" class="btn btn-primary w-100 mb-2">Simpan ke Inventaris</button>
-                <a href="barang.php" class="btn btn-outline-secondary w-100">Batal</a>
+                <a href="../barang.php" class="btn btn-outline-secondary w-100">Batal</a>
             </form>
         </div>
     </div>

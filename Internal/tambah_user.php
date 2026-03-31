@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include '../koneksi.php';
 
 if (!isset($_SESSION['user_id'])) { 
     header("Location: login.php"); 
@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         
                         <button type="submit" class="btn btn-success w-100 mb-2">Simpan User</button>
-                        <a href="dashboard.php" class="btn btn-outline-secondary w-100">Kembali ke Dashboard</a>
+                        <a href="../dashboard.php" class="btn btn-outline-secondary w-100">Kembali ke Dashboard</a>
                     </form>
                 </div>
             </div>

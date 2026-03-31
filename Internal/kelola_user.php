@@ -1,8 +1,8 @@
 <?php
-include 'koneksi.php';
+include '../koneksi.php';
 
 if (!isset($_SESSION['user_id'])) { 
-    header("Location: login.php"); 
+    header("Location: ../login.php"); 
     exit(); 
 }
 
@@ -27,7 +27,7 @@ if (isset($_GET['hapus'])) {
     } else {
         $stmt = $conn->prepare("DELETE FROM users WHERE id = ?"); 
         $stmt->execute([$id_hapus]); 
-        header("Location: kelola_user.php"); 
+        header("Location: ../kelola_user.php"); 
         exit();
     }
 }
@@ -48,12 +48,12 @@ $users_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         <div class="sidebar d-flex flex-column p-3 text-white" style="width: 260px;">
             <div class="logo-container">
-                <a href="dashboard.php" class="logo-text">🛒 Retail</a>
+                <a href="../dashboard.php" class="logo-text">🛒 Retail</a>
             </div>
             <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item"><a href="dashboard.php" class="nav-link">🏠 Dashboard</a></li>
-                <li class="nav-item"><a href="barang.php" class="nav-link">📦 Kelola Inventaris</a></li>
-                <li class="nav-item"><a href="kelola_user.php" class="nav-link active">👤 Kelola User</a></li>
+                <li class="nav-item"><a href="../dashboard.php" class="nav-link">🏠 Dashboard</a></li>
+                <li class="nav-item"><a href="../barang.php" class="nav-link">📦 Kelola Inventaris</a></li>
+                <li class="nav-item"><a href="../kelola_user.php" class="nav-link active">👤 Kelola User</a></li>
             </ul>
             <hr class="border-secondary">
             <div class="dropdown">
@@ -115,7 +115,7 @@ $users_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         </td>
                                         <td class="text-center">
                                             <?php if($user['id'] != $_SESSION['user_id']): ?>
-                                                <a href="kelola_user.php?hapus=<?= $user['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus admin ini?')">Hapus</a> <?php else: ?>
+                                                <a href="../kelola_user.php?hapus=<?= $user['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus admin ini?')">Hapus</a> <?php else: ?>
                                                 <button class="btn btn-sm btn-secondary" disabled>Hapus</button>
                                             <?php endif; ?>
                                         </td>

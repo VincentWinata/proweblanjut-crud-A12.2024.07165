@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include '../koneksi.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conn->prepare("SELECT * FROM users WHERE username = :username");
     $stmt->execute([':username' => $_POST['username']]);

@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include '../koneksi.php';
 if (!isset($_SESSION['user_id'])) { header("Location: login.php"); exit(); }
 $total_barang = $conn->query("SELECT COUNT(*) FROM barang")->fetchColumn();
 $total_stok = $conn->query("SELECT SUM(jumlah) FROM barang")->fetchColumn(); 
@@ -16,12 +16,12 @@ $total_stok = $conn->query("SELECT SUM(jumlah) FROM barang")->fetchColumn();
         
         <div class="sidebar d-flex flex-column p-3 text-white" style="width: 260px;">
             <div class="logo-container">
-                <a href="dashboard.php" class="logo-text">🛒 Retail</a>
+                <a href="../dashboard.php" class="logo-text">🛒 Retail</a>
             </div>
             
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="dashboard.php" class="nav-link active">
+                    <a href="../dashboard.php" class="nav-link active">
                         🏠 Dashboard
                     </a>
                 </li>
@@ -31,7 +31,7 @@ $total_stok = $conn->query("SELECT SUM(jumlah) FROM barang")->fetchColumn();
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="kelola_user.php" class="nav-link">
+                    <a href="../kelola_user.php" class="nav-link">
                         👤 Kelola Admin
                     </a>
                 </li>

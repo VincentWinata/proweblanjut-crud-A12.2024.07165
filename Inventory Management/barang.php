@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include '../koneksi.php';
 if (!isset($_SESSION['user_id'])) { header("Location: login.php"); exit(); }
 $barang_list = $conn->query("SELECT * FROM barang ORDER BY id DESC")->fetchAll();
 ?>
@@ -20,7 +20,7 @@ $barang_list = $conn->query("SELECT * FROM barang ORDER BY id DESC")->fetchAll()
             
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="dashboard.php" class="nav-link">
+                    <a href="../dashboard.php" class="nav-link">
                         🏠 Dashboard
                     </a>
                 </li>
@@ -30,7 +30,7 @@ $barang_list = $conn->query("SELECT * FROM barang ORDER BY id DESC")->fetchAll()
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="kelola_user.php" class="nav-link">
+                    <a href="../kelola_user.php" class="nav-link">
                         👤 Kelola User
                     </a>
                 </li>
@@ -41,7 +41,7 @@ $barang_list = $conn->query("SELECT * FROM barang ORDER BY id DESC")->fetchAll()
                 <span class="d-flex align-items-center text-white text-decoration-none">
                     <strong>👋 Halo, <?= htmlspecialchars($_SESSION['username']) ?></strong>
                 </span>
-                <a href="logout.php" class="btn btn-outline-danger btn-sm w-100 mt-3">🚪 Logout</a>
+                <a href="../logout.php" class="btn btn-outline-danger btn-sm w-100 mt-3">🚪 Logout</a>
             </div>
         </div>
         <div class="flex-grow-1 p-5">
@@ -92,7 +92,7 @@ $barang_list = $conn->query("SELECT * FROM barang ORDER BY id DESC")->fetchAll()
                                     <small><?= date('d M Y, H:i', strtotime($row['tanggal_masuk'])) ?></small>
                                 </td>
                                 <td class="text-center">
-                                    <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="../edit.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
                                     <a href="hapus.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus barang ini?')">Hapus</a>
                                 </td>
                             </tr>

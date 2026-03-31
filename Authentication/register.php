@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include '../koneksi.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Register</button>
                     </form>
-                    <div class="text-center mt-3"><a href="login.php">Sudah punya akun? Login</a></div>
+                    <div class="text-center mt-3"><a href="../login.php">Sudah punya akun? Login</a></div>
                 </div>
             </div>
         </div>
