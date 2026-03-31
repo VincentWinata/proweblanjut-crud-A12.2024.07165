@@ -1,6 +1,6 @@
 <div class="sidebar d-flex flex-column p-3 text-white" style="width: 260px;">
     <div class="logo-container">
-        <a href="../Internal/dashboard.php" class="logo-text">LEGO ADMIN</a>
+        <a href="../Internal/dashboard.php" class="logo-text">Business Management</a>
     </div>
     
     <ul class="nav nav-pills flex-column mb-auto">
