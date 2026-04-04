@@ -1,7 +1,5 @@
 <?php
 include 'koneksi.php';
-
-// Ambil semua barang yang jumlahnya lebih dari 0 (stok tersedia)
 $stmt = $conn->query("SELECT * FROM barang WHERE jumlah > 0 ORDER BY id DESC");
 $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -25,59 +23,51 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </a>
             <div>
                 <a href="Authentication/login.php" class="nav-link text-white text-uppercase" style="font-size: 0.8rem; letter-spacing: 2px;">
-                    <span class="me-2"></span> Login / Sign Up
+                    Login / Sign Up
                 </a>
             </div>
         </div>
     </nav>
 
-    <div class="hero-banner" style="background-image: url('assets/images/hero-banner.jpg');">
-        <div class="container">
-            <h1 class="hero-title">FIRST CLASS COMFORT & ENGINEERING</h1>
-            <p class="lead fw-light" style="letter-spacing: 2px;">Explore the Ultimate Lego Car Lineup.</p>
+    <div class="hero-banner">
+        <div class="hero-bg-blurred" style="background-image: url('assets/images/hero-banner.jpg');"></div>
+        <div class="hero-bg-sharp" style="background-image: url('assets/images/hero-banner.jpg');"></div>
+        
+        <div class="container hero-content">
+            <div class="hero-text-wrapper" id="heroTextContainer">
+                <h1 class="hero-title" id="heroTitle">FIRST CLASS COMFORT & ENGINEERING</h1>
+                <p class="lead fw-light hero-subtitle" id="heroDesc" style="letter-spacing: 2px;">Explore the Ultimate Lego Car Lineup.</p>
+                <a href="#katalogGrid" id="heroBtn" class="btn btn-outline-light rounded-0 px-4 py-2 mt-3 hero-action-btn" style="letter-spacing: 2px; text-transform: uppercase;">
+                    EXPLORE THE LINEUP
+                </a>
+            </div>
         </div>
     </div>
 
-    <div class="container py-5">
-        
-        <ul class="nav nav-pills justify-content-center category-filter-tabs">
-            <li class="nav-item">
-                <a class="nav-link active" href="#" data-filter="all">ALL MODELS</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" data-filter="Technic">TECHNIC</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" data-filter="Icons">ICONS</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" data-filter="Speed Champions">SPEED CHAMPIONS</a>
-            </li>
-        </ul>
+    <div class="container-fluid py-5">
+        <div class="minimal-nav-wrapper">
+            <ul class="minimal-nav-links category-filter-tabs">
+                <li><a href="#" class="nav-link active" data-filter="all">ALL MODELS</a></li>
+                <li><a href="#" class="nav-link" data-filter="Technic">TECHNIC</a></li>
+                <li><a href="#" class="nav-link" data-filter="Icons">ICONS</a></li>
+                <li><a href="#" class="nav-link" data-filter="Speed Champions">SPEED CHAMPIONS</a></li>
+            </ul>
+        </div>
 
-        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 mt-2" id="katalogGrid">
+        <div class="product-cluster" id="katalogGrid">
             <?php foreach ($barang_list as $row): ?>
-            <div class="col product-item" data-category="<?= htmlspecialchars($row['kategori']) ?>">
-                <div class="card product-card h-100 text-center">
-                    <div class="product-img-wrapper">
-                        <img src="<?= $row['gambar'] ? htmlspecialchars($row['gambar']) : 'https://via.placeholder.com/300x200?text=No+Image' ?>" alt="<?= htmlspecialchars($row['nama_barang']) ?>">
-                    </div>
-                    <div class="card-body pt-4">
-                        <small class="text-muted text-uppercase fw-bold" style="letter-spacing: 1.5px; font-size: 0.75rem;">
-                            <?= htmlspecialchars($row['kategori']) ?>
-                        </small>
-                        <h5 class="card-title fw-bold mt-2 mb-1" style="color: #111;">
-                            <?= htmlspecialchars($row['nama_barang']) ?>
-                        </h5>
-                        <p class="text-muted small mb-3 text-truncate" title="<?= htmlspecialchars($row['deskripsi']) ?>">
-                            <?= htmlspecialchars($row['deskripsi']) ?>
-                        </p>
-                        <a href="#" class="btn btn-outline-dark btn-sm rounded-0 px-4 py-2" style="letter-spacing: 1px;">
-                            EXPLORE MODEL
-                        </a>
-                    </div>
+            <a href="#" class="cluster-item product-item" data-category="<?= htmlspecialchars($row['kategori']) ?>">
+                <div class="cluster-img-container">
+                    <img src="<?= $row['gambar'] ? htmlspecialchars($row['gambar']) : 'https://via.placeholder.com/400x200?text=No+Image' ?>" alt="<?= htmlspecialchars($row['nama_barang']) ?>">
                 </div>
-            </div>
+                <div class="cluster-info">
+                    <span class="cluster-name"><?= htmlspecialchars($row['nama_barang']) ?></span>
+                    <span class="cluster-desc">
+                        <?= htmlspecialchars($row['kategori']) ?><br>
+                        <?= htmlspecialchars($row['jumlah']) ?> Pieces
+                    </span>
+                </div>
+            </a>
             <?php endforeach; ?>
         </div>
         
@@ -87,6 +77,9 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         <?php endif; ?>
 
+        <div class="text-center mt-5 mb-5">
+            <a href="#" class="btn btn-outline-dark rounded-0 px-4 py-2" style="letter-spacing: 1.5px; text-transform: uppercase;">Compare Models</a>
+        </div>
     </div>
 
     <script src="assets/script.js"></script>

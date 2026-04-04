@@ -2,13 +2,13 @@
 session_start();
 include '../koneksi.php';
 
-// Cek Cookie: Jika ada cookie remember me, otomatiskan session [cite: 183, 184]
+// Cek Cookie: Jika ada cookie remember me, otomatiskan isi session 
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['user_id']) && isset($_COOKIE['username'])) {
     $_SESSION['user_id'] = $_COOKIE['user_id'];
     $_SESSION['username'] = $_COOKIE['username'];
 }
 
-// Jika sudah ada session (sudah login), arahkan ke dashboard [cite: 182, 186, 187]
+// Jika sudah ada session (sudah login), arahkan ke dashboard 
 if (isset($_SESSION['user_id'])) {
     header("Location: ../Internal/dashboard.php");
     exit();
@@ -20,11 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $stmt->fetch();
 
     if ($user && password_verify($_POST['password'], $user['password'])) {
-        // Set Session utama [cite: 161]
+        // Set Session utama 
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
 
-        // Jika Remember Me dicentang, buat Cookie berlaku 7 hari [cite: 162, 164]
+        // Jika Remember Me dicentang, buat Cookie berlaku 7 hari 
         if (isset($_POST['remember'])) {
             setcookie('user_id', $user['id'], time() + (86400 * 7), "/"); 
             setcookie('username', $user['username'], time() + (86400 * 7), "/");
