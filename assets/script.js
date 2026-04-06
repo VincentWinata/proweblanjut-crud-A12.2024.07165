@@ -69,40 +69,45 @@ document.addEventListener('DOMContentLoaded', function() {
             // Teks meluncur dari 25vw ke 0
             let currentEntranceX = 25 - (entranceProgress * 25);
             
-            // 2. Logika EXIT/PARALLAX (Dari Kiri ke Tengah/Mengecil)
+           // 2. Logika EXIT/PARALLAX (Dari Kiri ke Tengah/Mengecil)
             // Hanya aktif jika banner sudah mulai menabrak bagian atas layar (60px)
             let exitProgress = 0;
             let bannerTopHit = rect.top - 60; 
             if (bannerTopHit < 0) {
-                exitProgress = Math.min(Math.abs(bannerTopHit) / 250, 1);
+                // UBAH 250 menjadi 500: Agar animasi gambar mengecil tidak "tiba-tiba"
+                exitProgress = Math.min(Math.abs(bannerTopHit) / 500, 1);
             }
 
-            // Jalankan Animasi
+            // Jalankan Animasi Background
             if(sharpImg) {
                 sharpImg.style.animation = 'none';
-                let scaleValue = 1 - (exitProgress * 0.3); // Mengecil ke 0.7
+                let scaleValue = 1 - (exitProgress * 0.3); // Mengecil ke 0.7 perlahan
                 sharpImg.style.transform = `scale(${scaleValue})`;
             }
 
+            // Animasi Judul
             if(title) {
                 title.style.animation = 'none';
                 title.style.opacity = entranceProgress;
                 
-                // Gabungkan Entrance (meluncur ke kiri) dan Exit (bergerak ke tengah lagi)
                 let finalX = 0;
                 if (exitProgress > 0) {
-                    finalX = exitProgress * maxMoveToCenter; // Gerak ke tengah saat scroll lanjut
+                    finalX = exitProgress * maxMoveToCenter; // Gerak ke tengah saat scroll
                 } else {
                     finalX = currentEntranceX + "vw"; // Meluncur dari tengah ke kiri saat baru muncul
                 }
                 
-                // Gunakan satuan yang benar
                 title.style.transform = (exitProgress > 0) ? `translateX(${finalX}px)` : `translateX(${finalX})`;
             }
 
-            // Deskripsi & Tombol (Hanya pudar saat exit)
-            let fadeOut = entranceProgress * (1 - exitProgress * 1.5);
-            let moveExtra = exitProgress * 120;
+            // --- PERBAIKAN DESKRIPSI & TOMBOL DI SINI ---
+            
+            // 1. Pudar Periodik/Bertahap: Ubah 1.5 menjadi 1.1 agar teks lebih lama terlihat sebelum hilang
+            let fadeOut = entranceProgress * (1 - exitProgress * 1.1);
+            
+            // 2. Mengikuti Judul: Kalikan dengan maxMoveToCenter * 0.55
+            // Ini membuat deskripsi & tombol bergeser mengikuti judul, tapi jaraknya hanya 55% dari judul
+            let moveExtra = exitProgress * (maxMoveToCenter * 0.80);
 
             [desc, btn].forEach(el => {
                 if(el) {

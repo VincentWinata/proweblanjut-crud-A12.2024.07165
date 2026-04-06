@@ -1,19 +1,15 @@
 <?php
 session_start();
-// Keluar dari folder Internal untuk mencari koneksi
 include '../koneksi.php';
 
-// Proteksi halaman, lempar ke folder Authentication jika belum login
 if (!isset($_SESSION['user_id'])) { 
     header("Location: ../Authentication/login.php"); 
     exit(); 
 }
 
-// Proses Tambah User
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambah_user'])) {
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
-    
     try {
         $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
         $stmt->execute([$username, $password]); 
@@ -23,10 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambah_user'])) {
     }
 }
 
-// Proses Hapus User
 if (isset($_GET['hapus'])) {
     $id_hapus = $_GET['hapus'];
-    // Mencegah admin menghapus dirinya sendiri
     if ($id_hapus == $_SESSION['user_id']) {
         $error = "Tindakan ditolak. Anda tidak dapat menghapus akun yang sedang digunakan.";
     } else {
@@ -44,16 +38,19 @@ $users_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Admin - Lego Collection</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body class="bg-light">
-    <div class="d-flex">
+    
+    <div class="admin-layout">
         
         <?php include 'sidebar.php'; ?>
 
-        <div class="flex-grow-1 p-5">
+        <main class="main-content">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="text-dark fw-bold" style="letter-spacing: 1px;">PENGATURAN AKSES ADMIN</h2>
             </div>
@@ -118,8 +115,7 @@ $users_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </div>
             </div>
-
-        </div>
+        </main>
     </div>
 </body>
 </html>

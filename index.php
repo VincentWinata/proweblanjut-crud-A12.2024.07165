@@ -14,7 +14,7 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/style.css">
 </head>
-<body style="background-color: #fff;">
+<body style="background-color: #fff;" class="is-frontend">
 
     <nav class="navbar navbar-expand-lg navbar-store fixed-top">
         <div class="container d-flex justify-content-between align-items-center">
@@ -84,7 +84,7 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <h5 class="fw-light">Koleksi mobil belum tersedia saat ini.</h5>
             </div>
         <?php endif; ?>
-
+ 
         <div class="container">
             <div class="fade-in-element mt-5 mb-5 d-flex justify-content-start" id="parkingBtnWrapper" style="padding-left: 20px;">
                 <a href="#" class="btn btn-outline-dark rounded-0 px-4 py-2" style="letter-spacing: 1.5px; text-transform: uppercase;">Compare Models</a>
