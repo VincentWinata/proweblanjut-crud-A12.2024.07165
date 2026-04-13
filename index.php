@@ -66,7 +66,7 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach ($barang_list as $row): ?>
             <a href="#" class="cluster-item product-item" data-category="<?= htmlspecialchars($row['kategori']) ?>">
                 <div class="cluster-img-container">
-                    <img src="<?= $row['gambar'] ? htmlspecialchars($row['gambar']) : 'https://via.placeholder.com/400x200?text=No+Image' ?>" alt="<?= htmlspecialchars($row['nama_barang']) ?>">
+                   <img src="<?= !empty($row['gambar']) ? htmlspecialchars($row['gambar']) : 'https://via.placeholder.com/400x200?text=Belum+Ada+Gambar' ?>" alt="<?= htmlspecialchars($row['nama_barang']) ?>">
                 </div>
                 <div class="cluster-info">
                     <span class="cluster-name"><?= htmlspecialchars($row['nama_barang']) ?></span>
