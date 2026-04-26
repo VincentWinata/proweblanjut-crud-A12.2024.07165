@@ -1,64 +1,23 @@
-<?php
-session_start();
-include '../koneksi.php';
-
-if (!isset($_SESSION['user_id'])) { 
-    header("Location: ../Authentication/login.php"); 
-    exit(); 
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tambah_user'])) {
-    $username = $_POST['username'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
-    try {
-        $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-        $stmt->execute([$username, $password]); 
-        $success = "Akses admin baru berhasil ditambahkan.";
-    } catch(PDOException $e) { 
-        $error = "Gagal menambah admin. Username mungkin sudah terpakai."; 
-    }
-}
-
-if (isset($_GET['hapus'])) {
-    $id_hapus = $_GET['hapus'];
-    if ($id_hapus == $_SESSION['user_id']) {
-        $error = "Tindakan ditolak. Anda tidak dapat menghapus akun yang sedang digunakan.";
-    } else {
-        $stmt = $conn->prepare("DELETE FROM users WHERE id = ?"); 
-        $stmt->execute([$id_hapus]); 
-        header("Location: kelola_user.php"); 
-        exit();
-    }
-}
-
-$stmt = $conn->query("SELECT id, username FROM users ORDER BY id DESC");
-$users_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Admin - Lego Collection</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/style.css">
-</head>
+    <link rel="stylesheet" href="assets/style.css"> </head>
 <body class="bg-light">
-    
     <div class="admin-layout">
         
-        <?php include 'sidebar.php'; ?>
+        <?php include '../app/views/admin/sidebar.php'; ?>
 
         <main class="main-content">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="text-dark fw-bold" style="letter-spacing: 1px;">PENGATURAN AKSES ADMIN</h2>
             </div>
             
-            <?php if(isset($success)): ?>
+            <?php if(!empty($success)): ?>
                 <div class="alert alert-dark rounded-0 shadow-sm border-0"><?= $success ?></div>
             <?php endif; ?>
-            <?php if(isset($error)): ?>
+            <?php if(!empty($error)): ?>
                 <div class="alert alert-danger rounded-0 shadow-sm border-0"><?= $error ?></div>
             <?php endif; ?>
 
@@ -66,7 +25,7 @@ $users_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="col-md-4 mb-4">
                     <div class="card card-custom p-4 shadow-sm border-0">
                         <h6 class="mb-4 fw-bold text-uppercase" style="letter-spacing: 1px;">Tambah Admin Baru</h6>
-                        <form method="POST">
+                        <form method="POST" action="">
                             <div class="mb-3">
                                 <label class="form-label text-muted small fw-bold text-uppercase">Username</label>
                                 <input type="text" class="form-control rounded-0" name="username" required autocomplete="off">
@@ -102,7 +61,7 @@ $users_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         </td>
                                         <td class="text-center">
                                             <?php if($user['id'] != $_SESSION['user_id']): ?>
-                                                <a href="kelola_user.php?hapus=<?= $user['id'] ?>" class="btn btn-sm btn-outline-danger rounded-0 px-3" onclick="return confirm('Hapus hak akses admin ini secara permanen?')">Hapus</a> 
+                                                <a href="index.php?action=kelola_user&hapus=<?= $user['id'] ?>" class="btn btn-sm btn-outline-danger rounded-0 px-3" onclick="return confirm('Hapus hak akses admin ini secara permanen?')">Hapus</a> 
                                             <?php else: ?>
                                                 <button class="btn btn-sm btn-light rounded-0 px-3 text-muted" disabled>Hapus</button>
                                             <?php endif; ?>

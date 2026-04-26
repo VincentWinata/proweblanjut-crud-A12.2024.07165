@@ -1,82 +1,3 @@
-<?php
-session_start();
-include '../koneksi.php';
-
-// Proteksi halaman admin
-if (!isset($_SESSION['user_id'])) { 
-    header("Location: ../Authentication/login.php"); 
-    exit(); 
-}
-
-$error_msg = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // 1. Validasi Input Sisi Server
-    $nama_barang = trim($_POST['nama_barang']);
-    $kategori = $_POST['kategori'];
-    $harga = $_POST['harga'];
-    $jumlah = $_POST['jumlah'];
-    $deskripsi = trim($_POST['deskripsi']);
-
-    if (empty($nama_barang)) {
-        $error_msg = "Nama model tidak boleh kosong.";
-    } elseif (!is_numeric($harga) || $harga < 0) {
-        $error_msg = "Harga harus berupa angka valid dan tidak boleh negatif.";
-    } elseif (!is_numeric($jumlah) || $jumlah < 0) {
-        $error_msg = "Jumlah stok harus berupa angka valid dan tidak boleh negatif.";
-    } else {
-        
-        // 2. Logika Unggah File Gambar (Syarat Tugas 3)
-        $gambar_path_db = NULL; // Default jika tidak ada gambar yang diunggah
-
-        if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] === UPLOAD_ERR_OK) {
-            $file_tmp = $_FILES['gambar']['tmp_name'];
-            $file_name = $_FILES['gambar']['name'];
-            $file_size = $_FILES['gambar']['size'];
-            $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-
-            $allowed_ext = ['jpg', 'jpeg', 'png'];
-
-            // Validasi Tipe dan Ukuran File
-            if (!in_array($file_ext, $allowed_ext)) {
-                $error_msg = "Gagal: Hanya format JPG, JPEG, dan PNG yang diizinkan.";
-            } elseif ($file_size > 2097152) { // Batas 2MB
-                $error_msg = "Gagal: Ukuran gambar maksimal 2MB.";
-            } else {
-                // Buat nama unik dan pindahkan file ke folder uploads
-                $nama_unik = uniqid() . '_' . basename($file_name);
-                
-                // Penting: Path penyimpanan fisik naik satu level (../) dari folder Inventory Management
-                $lokasi_simpan = '../uploads/' . $nama_unik; 
-                
-                // Path yang disimpan ke database (untuk dipanggil via HTML src)
-                $gambar_path_db = 'uploads/' . $nama_unik; 
-                
-                if (!move_uploaded_file($file_tmp, $lokasi_simpan)) {
-                    $error_msg = "Sistem gagal memindahkan file gambar ke server.";
-                }
-            }
-        } elseif (isset($_FILES['gambar']) && $_FILES['gambar']['error'] !== UPLOAD_ERR_NO_FILE) {
-             $error_msg = "Terjadi kesalahan saat mengunggah file. Pastikan ukuran file tidak melebihi limit server.";
-        }
-
-        // 3. Eksekusi Prepared Statements (Hanya jika tidak ada error)
-        if (empty($error_msg)) {
-            try {
-                $sql = "INSERT INTO barang (nama_barang, kategori, harga, jumlah, deskripsi, gambar, tanggal_masuk) 
-                        VALUES (?, ?, ?, ?, ?, ?, NOW())";
-                $stmt = $conn->prepare($sql);
-                $stmt->execute([$nama_barang, $kategori, $harga, $jumlah, $deskripsi, $gambar_path_db]);
-                
-                header("Location: barang.php"); 
-                exit();
-            } catch(PDOException $e) {
-                $error_msg = "Database Error: " . $e->getMessage();
-            }
-        }
-    }
-}
-?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -84,12 +5,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Model - Lego Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body class="bg-light">
     <div class="admin-layout">
         
-        <?php include '../Internal/sidebar.php'; ?>
+        <?php include '../app/views/admin/sidebar.php'; ?>
 
         <main class="main-content">
             <div class="container-fluid">
@@ -102,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     <?php endif; ?>
 
-                    <form method="POST" enctype="multipart/form-data">
+                    <form method="POST" action="" enctype="multipart/form-data">
                         <div class="row mb-3">
                             <div class="col-md-6 mb-3 mb-md-0">
                                 <label class="form-label text-muted small fw-bold text-uppercase">Nama Model</label>
@@ -146,14 +67,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-dark rounded-0 fw-bold px-4" style="letter-spacing: 1px;">SIMPAN MODEL</button>
-                            <a href="barang.php" class="btn btn-outline-secondary rounded-0 px-4">BATAL</a>
+                            <a href="index.php?action=barang" class="btn btn-outline-secondary rounded-0 px-4">BATAL</a>
                         </div>
                     </form>
                 </div>
             </div>
         </main>
     </div>
-    
-    <script src="../assets/script.js"></script>
+    <script src="assets/script.js"></script>
 </body>
 </html>

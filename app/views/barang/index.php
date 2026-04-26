@@ -1,15 +1,3 @@
-<?php
-session_start();
-include '../koneksi.php';
-
-if (!isset($_SESSION['user_id'])) { 
-    header("Location: ../Authentication/login.php"); 
-    exit(); 
-}
-
-$stmt = $conn->query("SELECT * FROM barang ORDER BY id DESC");
-$barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -17,13 +5,11 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Inventaris - Lego Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/style.css">
-</head>
+    <link rel="stylesheet" href="assets/style.css"> </head>
 <body class="bg-light">
-    
     <div class="admin-layout">
         
-        <?php include '../Internal/sidebar.php'; ?>
+        <?php include '../app/views/admin/sidebar.php'; ?>
 
         <main class="main-content">
             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -33,7 +19,7 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="card card-custom p-4 shadow-sm border-0">
                 <div class="row mb-4 align-items-center">
                     <div class="col-md-6">
-                        <a href="tambah.php" class="btn btn-dark fw-bold rounded-0" style="letter-spacing: 1px;">+ TAMBAH MODEL BARU</a>
+                        <a href="index.php?action=tambah_barang" class="btn btn-dark fw-bold rounded-0" style="letter-spacing: 1px;">+ TAMBAH MODEL BARU</a>
                     </div>
                     <div class="col-md-6">
                         <div class="input-group">
@@ -60,7 +46,7 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <?php foreach ($barang_list as $row): ?>
                             <tr>
                                 <td>
-                                    <img src="<?= !empty($row['gambar']) ? '../' . htmlspecialchars($row['gambar']) : 'https://via.placeholder.com/70x50?text=No+Image' ?>" class="thumbnail rounded-1" alt="Gambar Model" style="object-fit: cover; width: 70px; height: 50px;">
+                                    <img src="<?= !empty($row['gambar']) ? htmlspecialchars($row['gambar']) : 'https://via.placeholder.com/70x50?text=No+Image' ?>" class="thumbnail rounded-1" alt="Gambar Model" style="object-fit: cover; width: 70px; height: 50px;">
                                 </td>
                                 <td><span class="badge bg-secondary rounded-0 fw-normal px-2 py-1"><?= htmlspecialchars($row['kategori']) ?></span></td>
                                 <td>
@@ -73,8 +59,8 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <small class="text-muted"><?= date('d M Y, H:i', strtotime($row['tanggal_masuk'])) ?></small>
                                 </td>
                                 <td class="text-center">
-                                    <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-outline-dark mb-1 w-100 rounded-0">Edit</a>
-                                    <a href="hapus.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger w-100 rounded-0" onclick="return confirm('Hapus model ini dari katalog secara permanen?')">Hapus</a>
+                                    <a href="index.php?action=edit_barang&id=<?= $row['id'] ?>" class="btn btn-sm btn-outline-dark mb-1 w-100 rounded-0">Edit</a>
+                                    <a href="index.php?action=hapus_barang&id=<?= $row['id'] ?>" class="btn btn-sm btn-danger w-100 rounded-0" onclick="return confirm('Hapus model ini dari katalog secara permanen?')">Hapus</a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -92,6 +78,6 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </main>
     </div>
-    <script src="../assets/script.js"></script>
+    <script src="assets/script.js"></script>
 </body>
 </html>

@@ -1,34 +1,9 @@
-<?php
-session_start();
-include '../koneksi.php';
-
-// Jika sudah login, cegah akses ke halaman registrasi
-if (isset($_SESSION['user_id'])) {
-    header("Location: ../Internal/dashboard.php");
-    exit();
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    try {
-        $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
-        $stmt->execute([':username' => $username, ':password' => $password]);
-        // Arahkan ke login.php di folder yang sama
-        header("Location: login.php");
-        exit();
-    } catch(PDOException $e) {
-        $error = "Pendaftaran gagal! Username mungkin sudah digunakan.";
-    }
-}
-?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <title>Register - Lego Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/style.css">
-</head>
+    <link rel="stylesheet" href="assets/style.css"> </head>
 <body class="d-flex align-items-center justify-content-center vh-100 bg-light">
     <div class="container">
         <div class="row justify-content-center">
@@ -41,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     
                     <?php if(isset($error)) echo "<div class='alert alert-danger small'>$error</div>"; ?>
                     
-                    <form method="POST">
+                    <form method="POST" action="">
                         <div class="mb-3">
                             <label class="form-label text-muted small fw-bold text-uppercase">Username</label>
                             <input type="text" name="username" class="form-control rounded-0" required autocomplete="off">
@@ -54,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </form>
                     
                     <div class="text-center mt-4">
-                        <a href="login.php" class="text-decoration-none text-muted small">Sudah punya akun? Login di sini</a>
+                        <a href="index.php?action=login" class="text-decoration-none text-muted small">Sudah punya akun? Login di sini</a>
                     </div>
                 </div>
             </div>

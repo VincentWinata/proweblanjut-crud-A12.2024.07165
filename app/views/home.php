@@ -1,9 +1,3 @@
-<?php
-include 'koneksi.php';
-$stmt = $conn->query("SELECT * FROM barang WHERE jumlah > 0 ORDER BY id DESC");
-$barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -30,7 +24,7 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <a href="#" class="nav-link text-white text-uppercase d-none d-md-flex align-items-center" style="font-size: 0.8rem; letter-spacing: 1.5px;">
                     <i class="fab fa-whatsapp me-2" style="font-size: 1.1rem;"></i> WhatsApp
                 </a>
-                <a href="Authentication/login.php" class="nav-link text-white text-uppercase d-flex align-items-center" style="font-size: 0.8rem; letter-spacing: 1.5px;">
+                <a href="index.php?action=login" class="nav-link text-white text-uppercase d-flex align-items-center" style="font-size: 0.8rem; letter-spacing: 1.5px;">
                     <i class="far fa-user-circle me-2" style="font-size: 1.1rem;"></i> Login
                 </a>
             </div>
@@ -85,9 +79,9 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         <?php endif; ?>
  
-        <div class="container">
-            <div class="fade-in-element mt-5 mb-5 d-flex justify-content-start" id="parkingBtnWrapper" style="padding-left: 20px;">
-                <a href="#" class="btn btn-outline-dark rounded-0 px-4 py-2" style="letter-spacing: 1.5px; text-transform: uppercase;">Compare Models</a>
+        <div class="container" style="max-width: 1220px;">
+            <div class="fade-in-element mt-5 mb-5 d-flex justify-content-start" id="parkingBtnWrapper">
+                <a href="#" class="custom-hover-btn">COMPARE MODELS</a>
             </div>
         </div>
     </div>
@@ -95,14 +89,11 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="dynamic-banner">
         <div class="banner-bg-blurred" style="background-image: url('assets/images/showroom.jpg');"></div>
         <div class="banner-bg-sharp" style="background-image: url('assets/images/showroom.jpg');"></div>
-        
         <div class="container banner-content">
             <div class="banner-text-wrapper">
                 <h1 class="banner-title">SHOWROOM MODELS</h1>
                 <p class="lead fw-light banner-subtitle" style="letter-spacing: 2px;">Explore our exclusive in-store collection.</p>
-                <a href="#" class="btn btn-outline-light rounded-0 px-4 py-2 mt-3 banner-btn" style="letter-spacing: 2px; text-transform: uppercase;">
-                    FIND A STORE
-                </a>
+                <a href="#" class="btn btn-outline-light rounded-0 px-4 py-2 mt-3 banner-btn" style="letter-spacing: 2px; text-transform: uppercase;">FIND A STORE</a>
             </div>
         </div>
     </div>
@@ -110,14 +101,11 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="dynamic-banner">
         <div class="banner-bg-blurred" style="background-image: url('assets/images/commitment.jpg');"></div>
         <div class="banner-bg-sharp" style="background-image: url('assets/images/commitment.jpg');"></div>
-        
         <div class="container banner-content">
             <div class="banner-text-wrapper">
                 <h1 class="banner-title">OUR COMMITMENT</h1>
                 <p class="lead fw-light banner-subtitle" style="letter-spacing: 2px;">Crafting the ultimate building experience.</p>
-                <a href="#" class="btn btn-outline-light rounded-0 px-4 py-2 mt-3 banner-btn" style="letter-spacing: 2px; text-transform: uppercase;">
-                    READ MORE
-                </a>
+                <a href="#" class="btn btn-outline-light rounded-0 px-4 py-2 mt-3 banner-btn" style="letter-spacing: 2px; text-transform: uppercase;">READ MORE</a>
             </div>
         </div>
     </div>
@@ -125,19 +113,16 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="dynamic-banner">
         <div class="banner-bg-blurred" style="background-image: url('assets/images/event.jpg');"></div>
         <div class="banner-bg-sharp" style="background-image: url('assets/images/event.jpg');"></div>
-        
         <div class="container banner-content">
             <div class="banner-text-wrapper">
                 <h1 class="banner-title">UPCOMING EVENTS</h1>
                 <p class="lead fw-light banner-subtitle" style="letter-spacing: 2px;">Join our community of master builders.</p>
-                <a href="#" class="btn btn-outline-light rounded-0 px-4 py-2 mt-3 banner-btn" style="letter-spacing: 2px; text-transform: uppercase;">
-                    VIEW SCHEDULE
-                </a>
+                <a href="#" class="btn btn-outline-light rounded-0 px-4 py-2 mt-3 banner-btn" style="letter-spacing: 2px; text-transform: uppercase;">VIEW SCHEDULE</a>
             </div>
         </div>
     </div>
 
-    <footer class="store-footer">
+   <footer class="store-footer">
         <div class="container">
             <div class="row mb-5">
                 <div class="col-md-3 mb-4 mb-md-0">
@@ -180,7 +165,7 @@ $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
 
-            <div class="footer-divider"></div>
+        <div class="footer-divider"></div>
 
             <div class="row pb-3 align-items-center">
                 <div class="col-md-6">
