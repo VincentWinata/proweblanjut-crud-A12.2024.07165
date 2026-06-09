@@ -1,36 +1,22 @@
 <?php
-// app/models/UserModel.php
-
 class UserModel {
     private $conn;
 
-    public function __construct($db_connection) {
-        $this->conn = $db_connection;
+    public function __construct($db) {
+        $this->conn = $db;
     }
 
-    // Untuk Login: Cari user berdasarkan username
-    public function findByUsername($username) {
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = :username");
-        $stmt->execute([':username' => $username]);
+    // Mengambil data user untuk proses Login
+    public function getUserByUsername($username) {
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->execute([$username]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Untuk Register & Tambah Admin: Simpan user baru
-    public function createUser($username, $password) {
+    // Menyimpan user baru ke database
+    public function registerUser($username, $hashed_password) {
         $stmt = $this->conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-        return $stmt->execute([$username, $password]);
-    }
-
-    // Untuk Kelola Admin: Ambil semua data user
-    public function getAllUsers() {
-        $stmt = $this->conn->query("SELECT id, username FROM users ORDER BY id DESC");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    // Untuk Kelola Admin: Hapus user
-    public function deleteUser($id) {
-        $stmt = $this->conn->prepare("DELETE FROM users WHERE id = ?");
-        return $stmt->execute([$id]);
+        return $stmt->execute([$username, $hashed_password]);
     }
 }
 ?>

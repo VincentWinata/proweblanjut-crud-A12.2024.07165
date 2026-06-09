@@ -1,0 +1,6 @@
+# Mengabaikan file koneksi database agar password lokal tidak bocor ke GitHub
+app/koneksi.php
+
+# Mengabaikan folder environment / konfigurasi lokal
+.env
+error_log

@@ -1,84 +1,64 @@
 <?php
-// app/controllers/AuthController.php
-
-require_once '../app/models/user_model.php';
+require_once 'app/models/user_model.php';
 
 class AuthController {
-    private $model;
+    private $userModel;
 
-    public function __construct($db_connection) {
-        $this->model = new UserModel($db_connection);
+    public function __construct($db) {
+        $this->userModel = new UserModel($db);
     }
 
+    // TUGAS 6: Pendaftaran dengan Password Hashing
+    public function register() {
+        $pesan = '';
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+
+            // 1. Lakukan Hashing pada Password menggunakan fungsi bawaan PHP
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+            // 2. Simpan ke database melalui Model
+            if ($this->userModel->registerUser($username, $hashed_password)) {
+                $pesan = "Registrasi berhasil! Silakan login.";
+                // Opsional: header("Location: index.php?action=login");
+            } else {
+                $pesan = "Gagal mendaftar!";
+            }
+        }
+        // Tampilkan halaman view register
+        require 'app/views/auth/register.php';
+    }
+
+    // TUGAS 6: Login dengan Password Verify
     public function login() {
-        // Jika ada cookie, set session otomatis
-        if (!isset($_SESSION['user_id']) && isset($_COOKIE['user_id']) && isset($_COOKIE['username'])) {
-            $_SESSION['user_id'] = $_COOKIE['user_id'];
-            $_SESSION['username'] = $_COOKIE['username'];
-        }
+        $pesan = '';
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
 
-        // Jika sudah login, langsung lempar ke dashboard
-        if (isset($_SESSION['user_id'])) {
-            header("Location: index.php?action=dashboard");
-            exit();
-        }
+            // 1. Ambil data user dari database
+            $user = $this->userModel->getUserByUsername($username);
 
-        $error = null;
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $user = $this->model->findByUsername($_POST['username']);
-
-            if ($user && password_verify($_POST['password'], $user['password'])) {
+            // 2. Verifikasi apakah password yang diketik cocok dengan Hash di database
+            if ($user && password_verify($password, $user['password'])) {
+                // Sesi login berhasil
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
-
-                if (isset($_POST['remember'])) {
-                    setcookie('user_id', $user['id'], time() + (86400 * 7), "/"); 
-                    setcookie('username', $user['username'], time() + (86400 * 7), "/");
-                }
-
-                header("Location: index.php?action=dashboard");
-                exit();
+                header("Location: index.php");
+                exit;
             } else {
-                $error = "Login gagal! Periksa kembali username atau password Anda.";
+                $pesan = "Username atau password salah!";
             }
         }
-        
         // Tampilkan halaman view login
-        require_once '../app/views/auth/login.php';
-    }
-
-    public function register() {
-        if (isset($_SESSION['user_id'])) {
-            header("Location: index.php?action=dashboard");
-            exit();
-        }
-
-        $error = null;
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $username = $_POST['username'];
-            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-            
-            try {
-                $this->model->createUser($username, $password);
-                header("Location: index.php?action=login");
-                exit();
-            } catch(PDOException $e) {
-                $error = "Pendaftaran gagal! Username mungkin sudah digunakan.";
-            }
-        }
-
-        // Tampilkan halaman view register
-        require_once '../app/views/auth/register.php';
+        require 'app/views/auth/login.php';
     }
 
     public function logout() {
-        session_start();
-        session_unset();
         session_destroy();
-        setcookie('user_id', '', time() - 3600, "/");
-        setcookie('username', '', time() - 3600, "/");
         header("Location: index.php?action=login");
-        exit();
+        exit;
     }
 }
 ?>

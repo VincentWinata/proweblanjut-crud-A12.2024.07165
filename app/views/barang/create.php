@@ -27,7 +27,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6 mb-3 mb-md-0">
                                 <label class="form-label text-muted small fw-bold text-uppercase">Nama Model</label>
-                                <input type="text" name="nama_barang" class="form-control rounded-0" value="<?= htmlspecialchars($_POST['nama_barang'] ?? '') ?>" required>
+                                <input type="text" name="nama_barang" class="form-control rounded-0" value="<?= htmlspecialchars($_POST['nama_barang'] ?? '') ?>">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label text-muted small fw-bold text-uppercase">Seri / Kategori</label>
@@ -43,7 +43,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6 mb-3 mb-md-0">
                                 <label class="form-label text-muted small fw-bold text-uppercase">Harga (IDR)</label>
-                                <input type="number" name="harga" class="form-control rounded-0" value="<?= htmlspecialchars($_POST['harga'] ?? '') ?>" required>
+                                <input type="number" name="harga" class="form-control rounded-0" value="<?= htmlspecialchars($_POST['harga'] ?? '') ?>">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label text-muted small fw-bold text-uppercase">Jumlah Box (Stok)</label>
