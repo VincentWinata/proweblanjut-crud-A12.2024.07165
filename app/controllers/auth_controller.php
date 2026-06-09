@@ -1,5 +1,6 @@
 <?php
-require_once 'app/models/user_model.php';
+// Pastikan rute file model tepat
+require_once __DIR__ . '/../models/user_model.php';
 
 class AuthController {
     private $userModel;
@@ -8,52 +9,64 @@ class AuthController {
         $this->userModel = new UserModel($db);
     }
 
-    // TUGAS 6: Pendaftaran dengan Password Hashing
     public function register() {
         $pesan = '';
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $username = $_POST['username'];
+            $username = trim($_POST['username']);
             $password = $_POST['password'];
 
-            // 1. Lakukan Hashing pada Password menggunakan fungsi bawaan PHP
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $cek_user = $this->userModel->findByUsername($username);
 
-            // 2. Simpan ke database melalui Model
-            if ($this->userModel->registerUser($username, $hashed_password)) {
-                $pesan = "Registrasi berhasil! Silakan login.";
-                // Opsional: header("Location: index.php?action=login");
+            if ($cek_user) {
+                $pesan = "Username '$username' sudah terdaftar! Silakan gunakan nama lain.";
             } else {
-                $pesan = "Gagal mendaftar!";
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+                try {
+                    if ($this->userModel->createUser($username, $hashed_password)) {
+                        // PERBAIKAN 1: Tampilkan pop-up sukses, lalu paksa pindah ke halaman Login
+                        echo "<script>
+                                alert('Registrasi berhasil! Silakan login dengan akun Anda.');
+                                window.location.href = 'index.php?action=login';
+                              </script>";
+                        exit; // Hentikan eksekusi kode di sini
+                    } else {
+                        $pesan = "Gagal mendaftar!";
+                    }
+                } catch (PDOException $e) {
+                    $pesan = "Terjadi kesalahan sistem: " . $e->getMessage();
+                }
             }
         }
-        // Tampilkan halaman view register
-        require 'app/views/auth/register.php';
+        
+        require __DIR__ . '/../views/auth/register.php';
     }
 
-    // TUGAS 6: Login dengan Password Verify
     public function login() {
         $pesan = '';
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $username = $_POST['username'];
+            $username = trim($_POST['username']);
             $password = $_POST['password'];
 
-            // 1. Ambil data user dari database
-            $user = $this->userModel->getUserByUsername($username);
+            $user = $this->userModel->findByUsername($username);
 
-            // 2. Verifikasi apakah password yang diketik cocok dengan Hash di database
             if ($user && password_verify($password, $user['password'])) {
-                // Sesi login berhasil
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
-                header("Location: index.php");
+                
+                // PERBAIKAN 2: Ubah tujuan halaman setelah login. 
+                // Ganti tulisan di dalam tanda kutip ini dengan rute dashboard/kelola barang Anda!
+                // Contoh: Jika halaman dashboard Anda diakses via ?action=dashboard
+                header("Location: index.php?action=dashboard"); 
                 exit;
             } else {
                 $pesan = "Username atau password salah!";
             }
         }
-        // Tampilkan halaman view login
-        require 'app/views/auth/login.php';
+        
+        require __DIR__ . '/../views/auth/login.php';
     }
+        
 
     public function logout() {
         session_destroy();
